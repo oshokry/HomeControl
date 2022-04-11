@@ -1,3 +1,3 @@
 # Home Control
-K8 Based Home Control system
+K8S Based Home Control system
 
