@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-app
+  template:
+    metadata:
+      labels:
+        app: web-app
+    spec:
+      containers:
+      - name: web-app
+        image: oshokry/hc-web-app
+        volumeMounts:
+        - name: config
+          mountPath: /var/private
+        - name: tz-config
+          mountPath: /etc/localtime
+        
+      volumes:
+      - name: config
+        configMap:
+          name: control-config-map
+          items:
+          - key: config
+            path: config.ini
+      - name: tz-config
+        hostPath:
+          path: /usr/share/zoneinfo/Europe/Madrid
+          type: File
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-app-service
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 80
+    nodePort: 30080
+  selector:
+    app: web-app

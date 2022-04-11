@@ -1,0 +1,13 @@
+table, tr, th, td {
+  border-style:solid;
+  border-color: #9900FF;
+  border-width:1px;
+}
+
+.selected {
+  background: #4CAF50;
+}
+
+.cleared {
+  background: #FFFFFF;
+}

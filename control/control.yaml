@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: control
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: control
+  template:
+    metadata:
+      labels:
+        app: control
+    spec:
+      containers:
+      - name: control
+        image: oshokry/hc-control
+        env:
+        - name: IRRIGATION_CONFIG_FILE
+          value: "/var/private/config.ini"
+        - name: IRRIGATION_LOG_PATH
+          value: "/var/control/"
+        - name: IRRIGATION_SCRIPT_PATH
+          value: "/scripts/"
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: control-persistent-storage
+          mountPath: /var/control
+        - name: config
+          mountPath: /var/private
+        - name: tz-config
+          mountPath: /etc/localtime
+      volumes:
+      - name: control-persistent-storage
+        persistentVolumeClaim:
+          claimName: control-pv-claim
+      - name: config
+        configMap:
+          name: control-config-map
+          items:
+          - key: config
+            path: config.ini
+      - name: tz-config
+        hostPath:
+          path: /usr/share/zoneinfo/Europe/Madrid
+          type: File
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: control-cluster-service
+spec:
+  ports:
+  - port: 5000
+  selector:
+    app: control
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: control-nodeport-service
+spec:
+  type: NodePort
+  ports:
+  - port: 5000
+    targetPort: 5000
+    nodePort: 30050
+  selector:
+    app: control
