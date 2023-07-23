@@ -2,6 +2,8 @@ FROM ubuntu
 RUN apt update -y
 RUN apt upgrade -y
 
+RUN apt install -y tzdata
+
 RUN apt install python3-pip -y
 RUN pip3 install RPi.GPIO
 RUN pip3 install gpiozero

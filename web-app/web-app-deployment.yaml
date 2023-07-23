@@ -15,11 +15,15 @@ spec:
       containers:
       - name: web-app
         image: oshokry/hc-web-app
+        env:
+        - name: TZ
+          valueFrom:
+            configMapKeyRef:
+              name: timezone-config-map
+              key: timezone
         volumeMounts:
         - name: config
           mountPath: /var/private
-        - name: tz-config
-          mountPath: /etc/localtime
       volumes:
       - name: config
         configMap:
@@ -27,10 +31,6 @@ spec:
           items:
           - key: config
             path: config.ini
-      - name: tz-config
-        hostPath:
-          path: /usr/share/zoneinfo/Europe/Madrid
-          type: File
 ---
 apiVersion: v1
 kind: Service

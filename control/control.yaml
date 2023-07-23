@@ -16,6 +16,11 @@ spec:
       - name: control
         image: oshokry/hc-control
         env:
+        - name: TZ
+          valueFrom:
+            configMapKeyRef:
+              name: timezone-config-map
+              key: timezone
         - name: IRRIGATION_CONFIG_FILE
           value: "/var/private/config.ini"
         - name: IRRIGATION_LOG_PATH
@@ -29,8 +34,6 @@ spec:
           mountPath: /var/control
         - name: config
           mountPath: /var/private
-        - name: tz-config
-          mountPath: /etc/localtime
       volumes:
       - name: control-persistent-storage
         persistentVolumeClaim:
@@ -41,10 +44,6 @@ spec:
           items:
           - key: config
             path: config.ini
-      - name: tz-config
-        hostPath:
-          path: /usr/share/zoneinfo/Europe/Madrid
-          type: File
 ---
 apiVersion: v1
 kind: Service

@@ -17,6 +17,11 @@ spec:
       - image: oshokry/hc-mysql
         name: mysql
         env:
+        - name: TZ
+          valueFrom:
+            configMapKeyRef:
+              name: timezone-config-map
+              key: timezone
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
@@ -28,16 +33,10 @@ spec:
         volumeMounts:
         - name: mysql-persistent-storage
           mountPath: /var/lib/mysql
-        - name: tz-config
-          mountPath: /etc/localtime
       volumes:
       - name: mysql-persistent-storage
         persistentVolumeClaim:
           claimName: mysql-pv-claim
-      - name: tz-config
-        hostPath:
-          path: /usr/share/zoneinfo/Europe/Madrid
-          type: File
 ---
 apiVersion: v1
 kind: Service
