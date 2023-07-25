@@ -1,4 +1,3 @@
-from datetime import datetime
 from sys import argv
 from irrigationlib import closeAll
 from util import datetime_now
