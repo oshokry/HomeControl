@@ -1,15 +1,20 @@
 import configparser
 import MySQLdb
 import os
+from datetime import datetime
+
+def datetime_now():
+  # centralize the function for getting timestamp to allow changing behavior if needed in the future
+  return datetime.now()
 
 def getConfigFile():
-  return os.environ['IRRIGATION_CONFIG_FILE'] #'/home/pi/dev/config.ini'
+  return os.environ['IRRIGATION_CONFIG_FILE']
     
 def getLogPath():
-  return os.environ['IRRIGATION_LOG_PATH'] #'/home/pi/log/'
+  return os.environ['IRRIGATION_LOG_PATH']
 
 def getScriptsPath():
-  return os.environ['IRRIGATION_SCRIPT_PATH'] #'/home/pi/dev/scripts/'
+  return os.environ['IRRIGATION_SCRIPT_PATH']
 
 def getIrrigationDBName():
   return 'Irrigation';
