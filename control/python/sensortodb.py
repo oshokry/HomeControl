@@ -15,9 +15,10 @@ def saveToDB(humidity, temperature):
   try:
     cur.execute(sql, data)
     db.commit()
-  except:
+  except Exception as e:
     db.rollback()
-    print(str(datetime_now.now()) + " Saving Sensor data to DB failed")
+    print(str(datetime_now().now()) + " Saving Sensor data to DB failed")
+    print(e)
 
 if __name__ == '__main__':
   DHTPin = getDHT11Pin()
