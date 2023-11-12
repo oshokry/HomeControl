@@ -16,14 +16,20 @@ def getLogPath():
 def getScriptsPath():
   return os.environ['IRRIGATION_SCRIPT_PATH']
 
+def getDB_User():
+  return os.environ['MYSQL_USER']
+
+def getDB_Password():
+  return os.environ['MYSQL_PASSWORD']
+
 def getIrrigationDBName():
   return 'Irrigation';
 
 def getDB(dbName):
   config = configparser.ConfigParser()
   config.read(getConfigFile())
-  user = config['database']['user']
-  password = config['database']['password']
+  user = getDB_User()
+  password = getDB_Password()
   host = config['database']['host']
   port = int(config['database']['port'])
   return MySQLdb.connect(user=user, passwd=password, host=host, port=port, db=dbName)

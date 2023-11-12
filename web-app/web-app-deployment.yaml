@@ -21,6 +21,16 @@ spec:
             configMapKeyRef:
               name: timezone-config-map
               key: timezone
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: user
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: password
         volumeMounts:
         - name: config
           mountPath: /var/private

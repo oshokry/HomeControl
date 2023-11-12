@@ -21,6 +21,16 @@ spec:
             configMapKeyRef:
               name: timezone-config-map
               key: timezone
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: user
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: password
         - name: IRRIGATION_CONFIG_FILE
           value: "/var/private/config.ini"
         - name: IRRIGATION_LOG_PATH
